@@ -41,6 +41,9 @@ st.divider()
 
 url_input = st.text_input("Enter a URL to scan:", placeholder="e.g., http://example.com")
 
+if not url_input.endswith("/"):
+    url_input += "/" 
+        
 if st.button("Analyze URL", type="primary"):
     if not url_input:
         st.warning("Please enter a URL first.")
@@ -76,7 +79,6 @@ if st.button("Analyze URL", type="primary"):
             except Exception as e:
                 st.error(f"An error occurred during analysis: {e}")
 
-# --- Sidebar Info ---
 with st.sidebar:
     st.header("About Model")
     st.info(f"**Model Type:** Multi-Layer Perceptron (MLP)")
