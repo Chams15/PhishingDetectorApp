@@ -84,4 +84,4 @@ with st.sidebar:
     st.info(f"**Model Type:** Multi-Layer Perceptron (MLP)")
     st.info("**Vectorization:** TF-IDF")
     st.markdown("---")
-    st.caption("Ensure your .pkl files match the versions used during training.")
+    st.caption("Group GPTeam - CS9 Project 2025")
