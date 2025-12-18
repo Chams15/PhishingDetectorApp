@@ -3,25 +3,24 @@ import joblib
 import numpy as np
 import os
 
-# --- Page Configuration ---
+
 st.set_page_config(
     page_title="Malicious URL Detector",
     page_icon="🛡️",
     layout="centered"
 )
 
-# --- Load Models & Resources ---
-# We use @st.cache_resource to load these only once, making the app faster.
+
 @st.cache_resource
 def load_resources():
     try:
-        # Load the pre-trained Neural Network model
+        
         model = joblib.load('mlp_model.pkl')
         
-        # Load the TF-IDF Vectorizer
+        
         vectorizer = joblib.load('tfidf_vectorizer.pkl')
         
-        # Load the class names mapping
+        
         class_names = joblib.load('class_names.pkl')
         
         return model, vectorizer, class_names
@@ -32,7 +31,7 @@ def load_resources():
 
 model, vectorizer, class_names = load_resources()
 
-# --- UI Layout ---
+
 st.title("🛡️ Malicious URL Detector")
 st.markdown("""
 This tool uses a **Multi-Layer Perceptron (Neural Network)** to analyze URLs and detect potential security threats such as phishing or malware.
@@ -40,7 +39,6 @@ This tool uses a **Multi-Layer Perceptron (Neural Network)** to analyze URLs and
 
 st.divider()
 
-# --- Input Section ---
 url_input = st.text_input("Enter a URL to scan:", placeholder="e.g., http://example.com")
 
 if st.button("Analyze URL", type="primary"):
@@ -51,25 +49,21 @@ if st.button("Analyze URL", type="primary"):
     else:
         with st.spinner("Analyzing..."):
             try:
-                # 1. Preprocess the input
-                # The vectorizer expects an iterable (list), so we wrap the string in a list
+                
                 processed_input = vectorizer.transform([url_input])
                 
-                # 2. Make Prediction
+               
                 prediction_index = model.predict(processed_input)[0]
                 
-                # 3. Map to Class Name
-                # Check if class_names is a list/array or a dictionary
                 if isinstance(class_names, dict):
                     result_label = class_names.get(prediction_index, "Unknown")
                 else:
                     result_label = class_names[prediction_index]
 
-                # --- Display Results ---
+               
                 st.subheader("Analysis Result:")
                 
-                # Logic to determine color (assuming specific keywords for malicious classes)
-                # Adjust these keywords based on your actual class_names content
+                
                 safe_keywords = ['benign', 'safe', 'good']
                 is_safe = any(keyword in str(result_label).lower() for keyword in safe_keywords)
 
